@@ -16,10 +16,21 @@ vl_gpt: MultiModalityCausalLM = AutoModelForCausalLM.from_pretrained(
 )
 vl_gpt = vl_gpt.to(torch.bfloat16).cuda().eval()
 
+
+# user_prompt = "A panda, dressed in a small, red jacket and a tiny hat, sits on a wooden stool in a serene bamboo forest. The panda's fluffy paws strum a miniature acoustic guitar, producing soft, melodic tunes. Nearby, a few other pandas gather, watching curiously and some clapping in rhythm. Sunlight filters through the tall bamboo, casting a gentle glow on the scene. The panda's face is expressive, showing concentration and joy as it plays. The background includes a small, flowing stream and vibrant green foliage, enhancing the peaceful and magical atmosphere of this unique musical performance."
+
+# user_prompt = "a digital painting of a samoan man from the side leaping over a bubbling stream in a dark jungle at night. Dynamic action scene with gestural pose. holding a club"
+
+# user_prompt = "Self-portrait oil painting, a beautiful cyborg with golden hair, 8k"
+# user_prompt = "cat wizard, gandalf, lord of the rings,detailed, fantasy, cute, adorable, Pixar, Disney, 8k"
+# user_prompt = "A stunning princess from kabul in red, white traditional clothing, blue eyes, brown hair"
+
+user_prompt = "A boat with a woman, sailing off into the sunset on calm ocean waters. A gentle breeze blows the woman's hair"
+
 conversation = [
     {
         "role": "<|User|>",
-        "content": "A stunning princess from kabul in red, white traditional clothing, blue eyes, brown hair",
+        "content": user_prompt,
     },
     {"role": "<|Assistant|>", "content": ""},
 ]
@@ -89,11 +100,9 @@ def generate(
         save_path = os.path.join('generated_samples', "img_{}.jpg".format(i))
         PIL.Image.fromarray(visual_img[i]).save(save_path)
 
-# MADHU: This doesn't seem to work ?
+# MADHU: This doesn't seem to work for resolution other than 368x368
 generate(
     vl_gpt,
     vl_chat_processor,
     prompt,
-    img_size=768,
-    image_token_num_per_image=1152
 )
