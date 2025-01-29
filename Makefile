@@ -97,3 +97,6 @@ clean-py:
 	find . -depth -type d -name ".mypy_cache" -exec rm -r "{}" +
 
 clean: clean-py
+
+init: clean ## create and initialize conda environment
+		@conda env create --prefix ./env --file environment.yml
